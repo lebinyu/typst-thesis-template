@@ -2,6 +2,8 @@
 // It takes your content and some metadata and formats it.
 // Go ahead and customize it to your liking!
 
+
+// make cover page of a thesis
 #let titlepage(title:"", supervisor: (), group_name: "", institute: "", author: "", ID: "", address: (), email: "", closing_date: "") = {
   set document(title: title, author: author)
   set page(margin: (x: 3cm))
@@ -71,8 +73,33 @@
 
 
 
+//make table of content
+#let tableofcontent() = {
+  show heading.where(level: 1): it => { 
+    block(
+      inset: (top: 20pt, bottom: 10pt),
+      block(
+        block(
+        stroke: (left: 12pt + blue),
+        inset: (left: 24pt, top: 12pt, bottom: 6pt),
+        outset: (left: -6pt),
+      )[
+        #text(size: 28pt, fill: blue, it.body)
+      ])
+    )
+  }
+  set text(size: 12pt)
+  outline(
+    indent: true,
+    title: "Table of Content"
+  )
+}
 
 
+
+
+
+//make a body chapter
 #let chapterpage(
   chapterheading: "",
   introduction: "",
@@ -80,7 +107,7 @@
   title:""
 ) = {
   set page(
-    margin: (x: 3cm),
+    margin: (x: 3cm, y:5cm),
     numbering: "- 1 -",
     header: none
   )
@@ -106,14 +133,19 @@
   
   heading(level: 1, chapterheading)
   
-  //outline(indent: true, title: none, depth: 3)
+//   outline(
+//     indent: true, 
+//     title: none, 
+//     depth: 3,
+//     target: heading.where()
+//   )
 
   align(bottom)[#text(introduction)]
 
   pagebreak(weak: true)  
 
     set page(
-    margin: auto,
+    margin: (x:2.5cm, top:3cm, bottom:2.5cm),
     header: locate(
       loc => {
         let elems = query(
@@ -126,7 +158,8 @@
           } else {
             let body = elems.last().body
             smallcaps(emph([#text(counter(heading).display()) ] + body) + h(1fr) + title )
-            line(length: 100%)
+            line(start: (0cm,-0.3cm), length: 100%, stroke: 1.5pt)
+
           }
         } else {
           if elems == () {
@@ -134,12 +167,17 @@
           } else {
             let body = elems.last().body
             smallcaps( title + h(1fr) + emph([#text(counter(heading).display()) ] + body))
-            line(length: 100%)
+            line(start: (0cm,-0.3cm), length: 100%, stroke: 1.5pt)
           }
         }
       }
     )
   )
-  mainbody
+  //line(start: (0cm,-0.6cm), length: 100%)
+  //set par(leading: 0cm)
   
+  //line(start: (0cm,-0.6cm), length: 100%, stroke: 1.5pt)
+
+  //set par(leading: 0.65em)
+  mainbody
 }

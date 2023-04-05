@@ -20,8 +20,10 @@
 // your document will look. Go ahead and replace it with
 // your own content!
 
-#outline(indent: true,
-title: "Table of Content")
+
+#tableofcontent()
+
+//#outline(indent: true,title: "Table of Content")
 
 #set heading(numbering: "1.1")
 
