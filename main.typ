@@ -1,5 +1,7 @@
 #import "template.typ": *
 #import "chapter1.typ"
+#import "chapter2.typ"
+#import "abstract.typ"
 
 
 
@@ -20,14 +22,19 @@
 // your document will look. Go ahead and replace it with
 // your own content!
 
+#abstractpage(mainbody: abstract.mainbody)
+
 
 #tableofcontent()
+
+
+#abstractpage(mainbody: abstract.mainbody)
+#abstractpage(mainbody: abstract.mainbody)
 
 //#outline(indent: true,title: "Table of Content")
 
 #set heading(numbering: "1.1")
 
-#counter(page).update(0)
 
 
 #chapterpage(
@@ -36,12 +43,14 @@
   mainbody: chapter1.mainbody, 
   title: title
 )
-#pagebreak()
 
 
-
-#chapterpage(chapterheading: "theory")
-#pagebreak()
+#chapterpage(
+  chapterheading: chapter2.title,
+  introduction:chapter2.introduction, 
+  mainbody: chapter2.mainbody, 
+  title: title
+)
 
 #lorem(300)
 == Theory A

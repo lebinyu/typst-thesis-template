@@ -2,14 +2,52 @@
 // It takes your content and some metadata and formats it.
 // Go ahead and customize it to your liking!
 
+// set the heading style (failed)
+#let styleheading(title,doc) = {
+  show heading.where(level: 1): [
+    #block(
+      inset: (top: 20pt, bottom: 10pt),
+      block(
+        block(
+        stroke: (left: 12pt + blue),
+        inset: (left: 24pt, top: 12pt, bottom: 6pt),
+        outset: (left: -6pt),
+      )[
+        #text(size: 28pt, fill: blue, title)
+      ])
+    )
+  ]
+  heading(level: 1, outlined: false, title)
+  doc
+}
+
+
+#let even-or-odd = locate(loc => {
+  if calc.odd(loc.page()) {
+    //pagebreak(weak: false)
+  } else {
+    pagebreak(weak: false)
+  }
+})
+
 
 // make cover page of a thesis
-#let titlepage(title:"", supervisor: (), group_name: "", institute: "", author: "", ID: "", address: (), email: "", closing_date: "") = {
+#let titlepage(
+  title:"", 
+  supervisor: (), 
+  group_name: "", 
+  institute: "", 
+  author: "", 
+  ID: "", 
+  address: (), 
+  email: "", 
+  closing_date: ""
+) = {
   set document(title: title, author: author)
   set page(margin: (x: 3cm))
   pagebreak(weak: true)
   
-    linebreak() * 4
+  linebreak() * 4
   align(center)[
     #image(width: 9cm ,"figure/uzh_logo.png")
   ]
@@ -68,15 +106,82 @@
     align(left)[#closing_date],
   )
 
-  pagebreak(weak: true)
+  //locate(loc => {
+  //  if calc.odd(loc.page()) {
+  //    "odd page"
+  //    pagebreak()
+  //  } 
+  //})
+  //pagebreak(weak: true)
+  //pagebreak(weak: false)
+
 }
+
+
+// make abstract page
+#let abstractpage(
+  mainbody: "",
+) = {
+
+  set page(
+    numbering: "1 / 1",
+  )
+
+  locate(loc => {
+    if calc.even(loc.page()) {
+      //"even page"
+      //pagebreak()
+    } 
+  })
+  show heading.where(level: 1): it => { 
+  block(
+      inset: (top: 20pt, bottom: 10pt),
+      block(
+        block(
+        stroke: (left: 12pt + blue),
+        inset: (left: 24pt, top: 12pt, bottom: 6pt),
+        outset: (left: -6pt),
+      )[
+        #text(size: 28pt, fill: blue, it.body)
+      ])
+    )
+  }
+  set page(
+    margin: (x: 3cm, y:2.5cm),
+    header: none
+  )
+  
+  //show: styleheading("Abstract", mainbody)
+  
+  heading(level: 1, outlined: false, "Abstract")
+  mainbody
+
+  //pagebreak(weak: true)  
+
+}
+
 
 
 
 //make table of content
 #let tableofcontent() = {
+  set page(
+    numbering: "1 / 1",
+  )
+   
+  locate(loc => {
+    if calc.even(loc.page()) {
+      //"even page"
+      pagebreak()
+    } 
+  })
+  
+  //pagebreak()
+
+  //text("qweqweqweqweqweqweqwe")
+  
   show heading.where(level: 1): it => { 
-    block(
+  block(
       inset: (top: 20pt, bottom: 10pt),
       block(
         block(
@@ -89,10 +194,15 @@
     )
   }
   set text(size: 12pt)
+  //pagebreak(weak: true)
   outline(
     indent: true,
-    title: "Table of Content"
+    title: "Table of Content",
   )
+
+  //pagebreak(weak: true)
+
+  //counter(page).update(0)
 }
 
 
@@ -106,13 +216,19 @@
   mainbody: "",
   title:""
 ) = {
+  
+//  locate(loc => {
+//    if calc.even(loc.page()) {
+//      //"even page"
+//      pagebreak()
+//    } 
+// })
+  
   set page(
     margin: (x: 3cm, y:5cm),
     numbering: "- 1 -",
     header: none
   )
-  
-  pagebreak(weak: false)
 
   show heading.where(level: 1): it => { 
     block(
@@ -133,12 +249,12 @@
   
   heading(level: 1, chapterheading)
   
-//   outline(
-//     indent: true, 
-//     title: none, 
-//     depth: 3,
-//     target: heading.where()
-//   )
+//  outline(
+//    indent: true, 
+//    title: none, 
+//    depth: 3,
+//    target: heading.where()
+//  )
 
   align(bottom)[#text(introduction)]
 
@@ -180,4 +296,5 @@
 
   //set par(leading: 0.65em)
   mainbody
+  pagebreak(weak: true)
 }
